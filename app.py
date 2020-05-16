@@ -16,7 +16,6 @@ from flask_wtf import Form
 from forms import *
 import sys
 import array
-from models import *
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
