@@ -1,0 +1,155 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Edit Venue{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form class="form" method="post" action="/venues/{{venue.id}}/edit">
+      <h3 class="form-heading">Edit venue <em>{{ venue.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+       
+      <div class="form-group">
+        <label for="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div>
+      {% for error in form.name.errors %}
+        <li style="color:red">{{error}}</li>
+      {% endfor %}
+      </div>
+      <div class="form-group">
+          <label>City & State</label>
+          <div class="form-inline">
+            <div class="form-group">
+              {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true) }}
+            </div>
+            <div class="form-group">
+              {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true) }}
+            </div>
+            <div>
+              {% for error in form.city.errors %}
+                <li style="color:red">{{error}}</li>
+              {% endfor %}
+              </div>
+            <div>
+              {% for error in form.state.errors %}
+                <li style="color:red">{{error}}</li>
+              {% endfor %}
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        {{ form.address(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div>
+        {% for error in form.address.errors %}
+          <li style="color:red">{{error}}</li>
+        {% endfor %}
+        </div>
+      <div class="form-group">
+          <label for="phone">Phone</label>
+          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.phone.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class="form-group">
+          <label for="genres">genres</label>
+          <small>Ctrl+Click to select multiple</small>
+          {{ form.genres(class_ = 'form-control', placeholder='genres, separated by commas', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.genres.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+      <div class="form-group">
+          <label for="facebook_link">Facebook Link</label>
+          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.facebook_link.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class="form-group">
+          <label for="image_link">Image Link</label>
+          {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.image_link.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class="form-group">
+          <label for="website">website</label>
+          {{ form.website(class_ ='form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.website.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class='form-group'>
+          <label for="seeking_talent"> Seeking talent?</label>
+          {% for seeking_talent in form.seeking_talent %}
+            <tr>
+              <td>{{ seeking_talent }}</td>
+              <td>{{ seeking_talent.label }}</td>
+            </tr>
+          {% endfor %}
+        </div>
+        <div>
+          {% for error in form.seeking_talent.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class="form-group">
+          <label for="seeking_description">Seeking Description</label>
+          {{ form.seeking_description(class_ = 'form-control', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.seeking_description.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+
+      <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+  <script>
+    document.getElementsByClassName('form').onsubmit = function(e){
+        e.preventDefault();
+    fetch("/venues/{{ venue_id }}/edit",
+    {
+    method: 'POST',
+    body: JSON.stringify({
+      'name': document.getElementById('name').value,
+      'city': document.getElementById('city').value,
+      'state': document.getElementById('state').value,
+      'address': document.getElementById('address').value,
+      'phone': document.getElementById('phone').value,
+      'genres': document.getElementById('genres').value,
+      'facebook_link': document.getElementById('facebook_link').value,
+      'image_link': document.getElementById('image_link').value,
+      'website': document.getElementById('website').value,
+      'seeking_talent': document.getElementsByName('seeking_talent').value,
+      'seeking_description': document.getElementById('seeking_description').value
+    }),
+    headers:{
+      'Content-Type': 'application/json'
+    }
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(jsonResponse) {
+      console.log(jsonResponse);
+      const newLi = document.createElement('LI');
+      document.getElementById('items').appendChild(li)
+    })
+  }
+
+
+  </script>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Edit Artist{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form class="form" method="post" action="/artists/{{artist.id}}/edit">
+      <h3 class="form-heading">Edit artist <em>{{ artist.name }}</em></h3>
+      <div class="form-group">
+        <label for="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div>
+        {% for error in form.name.errors %}
+          <li style="color:red">{{error}}</li>
+        {% endfor %}
+        </div>
+      <div class="form-group">
+          <label>City & State</label>
+          <div class="form-inline">
+            <div class="form-group">
+              {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true) }}
+            </div>
+            <div class="form-group">
+              {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true) }}
+            </div>
+          </div>
+          <div>
+            {% for error in form.city.errors %}
+              <li style="color:red">{{error}}</li>
+            {% endfor %}
+            </div>
+            <div>
+              {% for error in form.state.errors %}
+                <li style="color:red">{{error}}</li>
+              {% endfor %}
+            </div>
+      </div>
+      <div class="form-group">
+          <label for="phone">Phone</label>
+          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.phone.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+      <div class="form-group">
+        <label for="genres">Genres</label>
+        <small>Ctrl+Click to select multiple</small>
+        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas',autofocus = true) }}
+      </div>
+      <div>
+        {% for error in form.genres.errors %}
+          <li style="color:red">{{error}}</li>
+        {% endfor %}
+        </div>
+      <div class="form-group">
+          <label for="genres">Facebook Link</label>
+          {{ form.facebook_link(class_ = 'form-control', placeholder='http://',autofocus = true) }}
+        </div>
+        <div class="form-group">
+          <label for="image_link">Image Link</label>
+          {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.image_link.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class="form-group">
+          <label for="website">website</label>
+          {{ form.website(class_ ='form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.website.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class='form-group'>
+          <label for="seeking_talent"> Seeking Venue ?</label>
+          {% for seeking_venue in form.seeking_venue %}
+            <tr>
+              <td>{{ seeking_venue }}</td>
+              <td>{{ seeking_venue.label }}</td>
+            </tr>
+          {% endfor %}
+        </div>
+             <div>
+          {% for error in form.seeking_venue.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+        <div class="form-group">
+          <label for="seeking_description">Seeking Description</label>
+          {{ form.seeking_description(class_ = 'form-control', autofocus = true) }}
+        </div>
+        <div>
+          {% for error in form.seeking_description.errors %}
+            <li style="color:red">{{error}}</li>
+          {% endfor %}
+          </div>
+      <input type="submit" value="Edit Artist" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+  <script>
+    document.getElementsByClassName('form').onsubmit = function(e){
+        e.preventDefault();
+    fetch('/artists/{{ artist.id }}/edit',
+    {
+    method: 'POST',
+    body: JSON.stringify({
+      'name': document.getElementById('name').value,
+      'city': document.getElementById('city').value,
+      'state': document.getElementById('state').value,
+      'phone': document.getElementById('phone').value,
+      'genres': document.getElementById('genres').value,
+      'facebook_link': document.getElementById('facebook_link').value,
+      'image_link': document.getElementById('image_link').value,
+      'website': document.getElementById('website').value,
+      'seeking_venue': document.getElementsByName('seeking_venue').value,
+      'seeking_description': document.getElementById('seeking_description').value
+    }),
+    headers:{
+      'Content-Type': 'application/json'
+    }
+    })
+    .then(function(response){
+      return response.json();
+    })
+  }
+
+
+  </script>
+{% endblock %}
